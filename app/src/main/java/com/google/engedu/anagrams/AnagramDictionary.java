@@ -13,7 +13,7 @@ import java.util.Random;
 public class AnagramDictionary {
 
     private static final int MIN_NUM_ANAGRAMS = 5;
-    private static final int DEFAULT_WORD_LENGTH = 3;
+    private static final int DEFAULT_WORD_LENGTH = 2;
     private static final int MAX_WORD_LENGTH = 7;
     private Random random = new Random();
     private int wordLength = DEFAULT_WORD_LENGTH;
@@ -73,18 +73,22 @@ public class AnagramDictionary {
         return new String(chars);
     }
 
-    public ArrayList<String> getAnagramsWithOneMoreLetter(String word) {
+    public ArrayList<String> getAnagramsWithTwoMoreLetter(String word) {
         ArrayList<String> result = new ArrayList<String>();
-        String tempWord;
+        String tempWord1,tempWord2;
         ArrayList<String> tempArrayList;
         for(char c='a';c<='z';c++){
-            tempWord = word + c;
-            tempWord = sortLetters(tempWord);
-            if(lettersToWord.containsKey(tempWord)){
-                tempArrayList=lettersToWord.get(tempWord);
-                for(int i=0;i<tempArrayList.size();i++){
-                    if(isGoodWord(tempArrayList.get(i),word)){
-                        result.add(tempArrayList.get(i));
+            tempWord1 = word + c;
+            for(char d='a'; d<='z';d++)
+            {
+                tempWord2 = tempWord1 + d;
+                tempWord2 = sortLetters(tempWord2);
+                if(lettersToWord.containsKey(tempWord2)){
+                    tempArrayList=lettersToWord.get(tempWord2);
+                    for(int i=0;i<tempArrayList.size();i++){
+                        if(isGoodWord(tempArrayList.get(i),word)){
+                            result.add(tempArrayList.get(i));
+                        }
                     }
                 }
             }
@@ -101,13 +105,13 @@ public class AnagramDictionary {
             ArrayList<String> lengthWords = sizeToWords.get(wordLength);
             int randomNum = random.nextInt(lengthWords.size()+1);
             for(i=randomNum;i<lengthWords.size();i++){
-                if(getAnagramsWithOneMoreLetter(lengthWords.get(i)).size()>=MIN_NUM_ANAGRAMS){
+                if(getAnagramsWithTwoMoreLetter(lengthWords.get(i)).size()>=MIN_NUM_ANAGRAMS){
                     wordLength++;
                     return lengthWords.get(i);
                 }
             }
             for(i=0;i<randomNum;i++){
-                if(getAnagramsWithOneMoreLetter(lengthWords.get(i)).size()>=MIN_NUM_ANAGRAMS){
+                if(getAnagramsWithTwoMoreLetter(lengthWords.get(i)).size()>=MIN_NUM_ANAGRAMS){
                     wordLength++;
                     return lengthWords.get(i);
                 }
